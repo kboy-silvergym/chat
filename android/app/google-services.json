@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "661362131585",
+    "project_id": "techford-chat1",
+    "storage_bucket": "techford-chat1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:661362131585:android:4444891b00382b6d438380",
+        "android_client_info": {
+          "package_name": "com.example.chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "661362131585-vuki3soihh6m9shktuh7omc35rpb0air.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chat",
+            "certificate_hash": "e29d5856b023cab7b2d49289eb7517d0fd77db6d"
+          }
+        },
+        {
+          "client_id": "661362131585-ceks2muvouiom5lk8bougmpqmg1bp44a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCt5NvtTb4l2d-qZhNLcPK4liv1ru3VSYQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "661362131585-ceks2muvouiom5lk8bougmpqmg1bp44a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "661362131585-imdoj9mdstjj891o1h6p5oaci6rfvbm6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.chat"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
