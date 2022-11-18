@@ -24,13 +24,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const SignInPage(),
-    );
+    if (FirebaseAuth.instance.currentUser == null) {
+      // 未ログイン
+      return MaterialApp(
+        theme: ThemeData(),
+        home: const SignInPage(),
+      );
+    } else {
+      // ログイン中
+      return MaterialApp(
+        theme: ThemeData(),
+        home: const ChatPage(),
+      );
+    }
   }
 }
 
@@ -66,7 +72,11 @@ class _SignInPageState extends State<SignInPage> {
         child: ElevatedButton(
           child: const Text('GoogleSignIn'),
           onPressed: () async {
-            await signInWithGoogle();
+            try {
+              await signInWithGoogle();
+            } catch (e) {
+              print(e);
+            }
             // ログインが成功すると FirebaseAuth.instance.currentUser にログイン中のユーザーの情報が入ります
             print(FirebaseAuth.instance.currentUser?.displayName);
 

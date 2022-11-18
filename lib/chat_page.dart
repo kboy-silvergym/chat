@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'main.dart';
+import 'my_page.dart';
 import 'post.dart';
 
 class ChatPage extends StatefulWidget {
@@ -16,6 +18,26 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const MyPage();
+                  },
+                ),
+              );
+            },
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(
+                FirebaseAuth.instance.currentUser?.photoURL ?? '',
+              ),
+            ),
+          ),
+        ],
+      ),
       body: Container(
         color: Colors.lightBlue[200],
         child: Column(
@@ -37,25 +59,7 @@ class _ChatPageState extends State<ChatPage> {
                       // これは withConverter を使ったことにより得られる恩恵です。
                       // 何もしなければこのデータ型は Map になります。
                       final post = docs[index].data();
-                      return Wrap(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                            padding: const EdgeInsets.all(8),
-                            child: Text(
-                              post.text,
-                              style: const TextStyle(fontSize: 20),
-                            ),
-                          ),
-                        ],
-                      );
+                      return PostWidget(post: post);
                     },
                   );
                 },
@@ -116,6 +120,66 @@ class _ChatPageState extends State<ChatPage> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class PostWidget extends StatelessWidget {
+  const PostWidget({
+    Key? key,
+    required this.post,
+  }) : super(key: key);
+
+  final Post post;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        CircleAvatar(
+          backgroundImage: NetworkImage(
+            post.posterImageUrl,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Row(
+          children: [
+            Wrap(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    post.text,
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                ),
+              ],
+            ),
+            Text(
+              // toDate() で Timestamp から DateTime に変換できます。
+              DateFormat('MM/dd HH:mm').format(post.createdAt.toDate()),
+              style: const TextStyle(fontSize: 10),
+            ),
+            // List の中の場合は if 文であっても {} この波かっこはつけなくてよい
+            if (FirebaseAuth.instance.currentUser!.uid == post.posterId)
+              IconButton(
+                onPressed: () {
+                  // 削除は reference に対して delete() を呼ぶだけでよい。
+                  post.reference.delete();
+                },
+                icon: const Icon(Icons.delete),
+              ),
+          ],
+        ),
+      ],
     );
   }
 }
